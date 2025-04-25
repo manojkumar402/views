@@ -16,7 +16,7 @@ async function Update({
   }: {
     params: { update: string }
   }) {
-    const {data} = await axios.get(`${process.env.NEXT_PUBLIC_NODE_SERVER}/book/${params.update}`);
+    const {data} = await axios.get(`${process.env.NEXT_PUBLIC_NODE_SERVER}/file/${params.update}`);
     if(data.status!= "success"){
       console.error(data);
       return await Promise.reject(data);
@@ -27,7 +27,7 @@ async function Update({
           <UpdateBook 
             id={book._id} 
             bookName={book.name} 
-            // bookAuthor={book.author}
+
           />
           
         </div>

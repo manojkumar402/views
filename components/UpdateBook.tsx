@@ -3,34 +3,24 @@ import axios from "axios";
 import { Loader} from "lucide-react";
 import { useRouter } from "next/navigation";
 import {  useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
 
 type UpdateProps = {
   id:string,
   bookName:string,
-  // bookAuthor:string,
 }
 
 function UpdateBook({id,bookName}:UpdateProps) {
   const router = useRouter();
-  const [file,setFile] = useState<Blob | null>();
   const [name,setName] = useState<string>(bookName);
-  // const [author,setAuthor] = useState<string>(bookAuthor);
-  const [isLoading,setLoading] = useState(false);
-
-  
-  const handleChange = (file:Blob) => {
-    setFile(file);
-  }
+  const [isLoading,setLoading] = useState(false);  
 
   const onUpdate = async (e:any) => {
     try{
       e.preventDefault();
       setLoading(true);
-      console.log(name,file);
-      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_NODE_SERVER}/book/${id}`,{
-        name,
-        file
+      console.log(name);
+      const {data} = await axios.patch(`${process.env.NEXT_PUBLIC_NODE_SERVER}/file/${id}`,{
+        name
       },
         {
           headers: {
@@ -45,9 +35,6 @@ function UpdateBook({id,bookName}:UpdateProps) {
       }
      
       setName("");
-      // setAuthor("");
-      setFile(null);
-
       setLoading(false);
       router.push("/");
     }catch(err){
@@ -55,64 +42,46 @@ function UpdateBook({id,bookName}:UpdateProps) {
       return Promise.reject(err);
     }finally{
       setLoading(false);
-      // router.push("/")
     }
   }
 
-    return (
-      <div className="mt-2 px-7 py-3">
-        <form  className="grid grid-cols-2  gap-x-16 gap-y-8 " onSubmit={onUpdate}>
-          <div className="flex flex-col gap-1">
-            <label htmlFor="name">Enter Book Name</label>
-            <input 
-              name="name" 
-              type="text" 
-              placeholder="Atomic Habits" 
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg">
+        <form
+          className="space-y-6"
+          onSubmit={onUpdate}
+        >
+          <div className="flex flex-col gap-2">
+            <label htmlFor="name" className="text-gray-700 font-medium">
+              Edit File Name
+            </label>
+            <input
+              name="name"
+              type="text"
+              placeholder="Atomic Habits"
               value={name}
-              required 
+              required
               onChange={(e) => setName(e.target.value)}
-              className="p-3 text-base rounded-md bg-slate-700 placeholder:text-sm placeholder-slate-400 outline-none focus:text-slate-300"
+              className="p-3 text-base rounded-md border border-gray-300 placeholder:text-sm placeholder-gray-400 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
-
-          {/* <div className="flex flex-col gap-1">
-            <label htmlFor="author">Enter Author Name</label>
-            <input 
-              name="author" 
-              type="text" 
-              placeholder="James Clear" 
-              value={author}
-              required
-              onChange={(e) => setAuthor(e.target.value)}
-              className="p-3 text-base rounded-md bg-slate-700 placeholder:text-sm placeholder-slate-400 outline-none focus:text-slate-300"
-            />
-          </div> */}
-
-          <div className="flex flex-col gap-1 overflow-hidden whitespace-pre">
-            <label htmlFor="file">Upload Image </label>
-            <FileUploader 
-              handleChange={handleChange} 
-              name="file" 
-              types={["jpg","jpeg","png","webp"]} 
-              label={"Upload or drop a image right here"}
-              required
-              fileOrFiles={file}
-              />
-          </div>
-          
-          <div className="flex gap-6 items-end">
+  
+          <div className="flex justify-end">
             <button
-              type="submit" 
-              className="border-2 border-slate-200 rounded-md py-2 px-4 hover:bg-slate-800 hover:text-slate-100 cursor-pointer"
-            >{
-              !isLoading ? "Submit" :(
-                <Loader className="h-6 w-6 animate-spin"/>
-              )
-            }</button>
+              type="submit"
+              className="rounded-md py-2 px-6 bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-200 disabled:opacity-60"
+              disabled={isLoading}
+            >
+              {!isLoading ? "Submit" : <Loader className="h-5 w-5 animate-spin" />}
+            </button>
           </div>
         </form>
       </div>
-    );
+    </div>
+  );
+  
+  
 }
 
 export default UpdateBook;

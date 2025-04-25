@@ -1,7 +1,7 @@
 import ListBooks from "@/components/ListBooks";
 import NewBook from "@/components/NewBook";
 import axios from "axios";
-import { FileText, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export const dynamic = 'force-dynamic'
@@ -20,27 +20,6 @@ export default async function Home({ searchParams }: SearchParamProps) {
     return Promise.reject(data);
   }
 
-  /*
-  return (
-    <main className="flex justify-center items-center flex-col gap-10 p-5 text-xl">
-      <div className="w-full">
-        <h2 className="text-5xl text-center">Book Store</h2>
-        <div className="flex justify-end pr-16">
-          <Link 
-            href="/?add=true" 
-            className="px-4 py-2 place-items-end bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            >
-            Add New Book
-          </Link>
-        </div>
-      </div>
-      {model && <NewBook/>}
-      <ListBooks Books={data.data}/>
-    </main>
-  );
-
-  */
-
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       {/* Top Navbar */}
@@ -58,18 +37,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
 
       {/* File Grid Section */}
       <main className="flex-1 p-6 overflow-auto">
-        <h2 className="text-lg font-semibold mb-4">Uploaded Files</h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {[...Array(12)].map((_, i) => (
-            <div
-              key={i}
-              className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer transition"
-            >
-              <FileText className="text-blue-500 mb-2" />
-              <p className="text-sm truncate">File_{i + 1}.docx</p>
-            </div>
-          ))}
-        </div>
+        <ListBooks Files={data.data} />
         {model && <NewBook/>}
       </main>
 
