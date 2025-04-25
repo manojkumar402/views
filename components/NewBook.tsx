@@ -14,8 +14,10 @@ function NewBook() {
   const router = useRouter();
 
   const handleChange = (file:Blob) => {
+    const selectedFile = file as File;
     setFile(file);
-  }
+    setName(selectedFile.name)
+  };
 
   const onSubmit = async (e:any) => {
     try{
@@ -52,59 +54,52 @@ function NewBook() {
   }
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
-      <div className="p-8 border  shadow-lg rounded-md bg-black">
+    <div className="fixed inset-0 bg-white bg-opacity-80 overflow-y-auto h-full w-full flex items-center justify-center">
+      <div className="p-8 border shadow-lg rounded-md bg-white max-w-lg w-full">
         <div>
           <div className="flex justify-between mt-4 px-6">
-            <h3 className="text-4xl font-bold text-slate-300">Add New Book</h3>
+            <h3 className="text-3xl font-semibold text-gray-800">Add New File</h3>
             <button
               onClick={router.back}
-              className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="px-4 py-2 bg-gray-200 text-gray-800 text-base font-medium rounded-md shadow-sm hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400"
             >
-              <X/>
+              <X />
             </button>
           </div>
-          <div className="mt-2 px-7 py-3">
-              <form  className="grid grid-cols-2  gap-x-16 gap-y-8 " onSubmit={onSubmit}>
-                <div className="flex flex-col gap-1">
-                  <label htmlFor="name">Enter File Name</label>
-                  <input 
-                    name="name" 
-                    type="text" 
-                    placeholder="Atomic Habits" 
-                    value={name}
-                    required 
-                    onChange={(e) => setName(e.target.value)}
-                    className="p-3 text-base rounded-md bg-slate-700 placeholder:text-sm placeholder-slate-400 outline-none focus:text-slate-300"
-                  />
-                </div>
+          <div className="mt-4 px-7 py-3">
+            <form
+              className="grid grid-cols-1 gap-y-8"
+              onSubmit={onSubmit}
+            >
+              <div className="flex flex-col gap-1">
+                <label htmlFor="file" className="text-lg font-medium text-gray-700">
+                  Upload Image
+                </label>
+                <FileUploader
+                  handleChange={handleChange}
+                  name="file"
+                  types={["jpg", "jpeg", "png", "webp"]}
+                  label={"Drag or click to upload an image"}
+                  required
+                  fileOrFiles={file}
+                />
+              </div>
 
-                <div className="flex flex-col gap-1 overflow-hidden whitespace-pre">
-                  <label htmlFor="file">Upload Image </label>
-                  <FileUploader 
-                    handleChange={handleChange} 
-                    name="file" 
-                    types={["jpg","jpeg","png","webp"]} 
-                    label={"Upload or drop a image right here"}
-                    required
-                    fileOrFiles={file}
-                    />
-                </div>
-                
-                <div className="flex gap-6 items-end">
-                  <button
-                    type="submit" 
-                    value="Submit" 
-                    className="border-2 border-slate-200 rounded-md py-2 px-4 hover:bg-slate-800 hover:text-slate-100 cursor-pointer"
-                  >{
-                    !isLoading ? "Submit" :(
-                      <Loader className="h-6 w-6 animate-spin"/>
-                    )
-                  }</button>
-                </div>
-              </form>
+              <div className="flex gap-6 items-end justify-center">
+                <button
+                  type="submit"
+                  value="Submit"
+                  className="w-full border-2 border-blue-500 bg-blue-100 text-blue-700 rounded-md py-2 px-4 hover:bg-blue-200 hover:text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-400 flex justify-center items-center"
+                >
+                  {!isLoading ? (
+                    "Submit"
+                  ) : (
+                    <Loader className="h-6 w-6 animate-spin" />
+                  )}
+                </button>
+              </div>
+            </form>
           </div>
-          
         </div>
       </div>
     </div>
