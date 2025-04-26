@@ -1,6 +1,6 @@
 "use client"
 import axios from "axios";
-import { FileText, Loader, Pen, Pencil, Trash2 } from "lucide-react";
+import { Eye, FileText, Loader, Pen, Pencil, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -76,7 +76,7 @@ function ListBooks({ Files }: FilesStore) {
                                 key={file._id}
                                 className="bg-white p-4 rounded-lg shadow hover:shadow-md cursor-pointer transition flex flex-col items-center"
                             >
-                                <FileText className="text-blue-500 mb-2" />
+                                <img src={file.imageUrl} />
                                 <p className="text-sm truncate mb-2">{file.name}</p>
                                 <div className="flex gap-2">
                                     <Link
